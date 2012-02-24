@@ -24,6 +24,8 @@
 
 import urllib
 
+__all__ = ['Page_Crawler', 'File_Crawler', 'URL_Crawler']
+
 class Page_Crawler(object):
     '''Crawls a html page given in form of string
     '''
@@ -33,9 +35,9 @@ class Page_Crawler(object):
     def get_urls(self):
         start_point = self.html.find('<a href=',0)
         while start_point >= 0:
-			eq = self._get_url(start_point)
+	    eq = self._get_url(start_point)
     	    start_point = self.html.find('<a href=',eq)
-        return urls
+        return self.urls
 
     def _get_url(self, start_point):
         start_quote = self.html.find('"',start_point)
@@ -52,19 +54,20 @@ class File_Crawler(object):
 		self.urls = []
 		
 	def get_urls(self):
-		page = f.read()
+		#self.f.seek(0)
+		page = self.f.read()
 		page_crawler = Page_Crawler(page)
-		self.urls = page_crawler(page)
+		self.urls = page_crawler.get_urls()
 		return self.urls
 
-def URL_Crawler(object):
+class URL_Crawler(object):
 	'''crawls a web link
 	'''
 	def __init__(self, url):
 		self.url = url
 		self.urls = []
 		
-	def get_urls():
+	def get_urls(self):
 		res = urllib.urlopen(self.url)
 		file_crawler = File_Crawler(res)
 		self.urls = file_crawler.get_urls()
