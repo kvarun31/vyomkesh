@@ -65,7 +65,7 @@ class File_Crawler(object):
 		self.urls = []
 		
 	def get_urls(self):
-		if type(f) == file : f.seek(0)
+		if type(self.f) == file : self.f.seek(0)
 		page = self.f.read()
 		page_crawler = Page_Crawler(page)
 		self.urls = page_crawler.get_urls()
