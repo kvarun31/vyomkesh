@@ -24,6 +24,17 @@
 
 import urllib
 
+'''
+Usage
+
+to crawl a URL url, url should begin with
+'http://' or other protocol
+
+uc = URL_Crawler(url)
+urls = uc.get_urls()
+
+'''
+
 __all__ = ['Page_Crawler', 'File_Crawler', 'URL_Crawler']
 
 class Page_Crawler(object):
@@ -54,7 +65,7 @@ class File_Crawler(object):
 		self.urls = []
 		
 	def get_urls(self):
-		#self.f.seek(0)
+		if type(f) == file : f.seek(0)
 		page = self.f.read()
 		page_crawler = Page_Crawler(page)
 		self.urls = page_crawler.get_urls()
