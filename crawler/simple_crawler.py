@@ -73,7 +73,7 @@ class File_Crawler(object):
 
 class URL_Crawler(object):
 	'''Crawls a Web Page pointed by the URL
-	will if no protocol given we'll handle it as http
+	   if no protocol given we'll handle it as http
 	'''
 	def __init__(self, url):
 		url = url.strip()
