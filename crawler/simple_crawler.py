@@ -41,7 +41,7 @@ class Page_Crawler(object):
     '''Crawls a html page given in form of string
     '''
     def __init__(self, page):
-        self.html = page
+        self.html = page.replace('\'', '"')
         self.urls = []
     def get_urls(self):
         start_point = self.html.find('<a href=',0)
@@ -58,7 +58,7 @@ class Page_Crawler(object):
 
 
 class File_Crawler(object):
-	'''Crawl a File and return URLS
+	'''Crawls a File and return URLS
 	'''
 	def __init__(self, f):
 		self.f = f
@@ -72,9 +72,13 @@ class File_Crawler(object):
 		return self.urls
 
 class URL_Crawler(object):
-	'''crawls a web link
+	'''Crawls a Web Page pointed by the URL
+	will if no protocol given we'll handle it as http
 	'''
 	def __init__(self, url):
+		url = url.strip()
+		if not '://' in url:
+			url = 'http://'+url
 		self.url = url
 		self.urls = []
 		
@@ -82,7 +86,24 @@ class URL_Crawler(object):
 		res = urllib.urlopen(self.url)
 		file_crawler = File_Crawler(res)
 		self.urls = file_crawler.get_urls()
+		self.clean_urls()
 		return self.urls
+	
+	def clean_urls(self):
+		'''takes care of relative urls, fixing them by appending it
+		to base url.		 
+		'''
+		for i in range(len(self.urls)):
+			url = self.urls[i].strip()
+			if url.startswith('/') or url.startswith('#'):
+				url = self.url+url
+			self.urls[i] = url
+		#TODO not sure about urls starting with "#" they need not 
+		#not to be re-crawled,
+		#should i take care of that in other handler 
+		#or just remove it from returning list	
+			
+		
 		
 		
 
